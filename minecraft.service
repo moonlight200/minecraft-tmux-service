@@ -1,0 +1,27 @@
+[Unit]
+Description=Minecraft Server
+
+Wants=network.target
+After=network.target
+
+[Service]
+Type=forking
+User=minecraft
+Group=minecraft
+Nice=5
+KillMode=none
+
+ProtectHome=read-only
+ProtectSystem=full
+PrivateDevices=no
+NoNewPrivileges=yes
+PrivateTmp=no
+InaccessiblePaths=/root /sys /srv -/opt /media -/lost+found
+ReadWritePaths=/var/minecraft
+WorkingDirectory=/var/minecraft
+ExecStart=/var/minecraft/service.sh start
+ExecReload=/var/minecraft/service.sh reload
+ExecStop=/var/minecraft/service.sh stop
+
+[Install]
+WantedBy=multi-user.target
