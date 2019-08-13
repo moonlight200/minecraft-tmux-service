@@ -38,7 +38,7 @@ stop_server() {
 	mc_command "title @a times 3 14 3"
 	for i in {10..1}; do
 		mc_command "title @a subtitle {\"text\":\"in $i seconds\",\"color\":\"gray\"}"
-		mc_command "title @a title {\"text\":\"Sutting down\",\"color\":\"dark_red\"}"
+		mc_command "title @a title {\"text\":\"Shutting down\",\"color\":\"dark_red\"}"
 		sleep 1
 	done
 
