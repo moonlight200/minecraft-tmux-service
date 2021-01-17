@@ -2,6 +2,8 @@
 # Minecraft service that starts the minecraft server in a tmux session
 
 MC_HOME="/var/minecraft"
+MC_PID_FILE="$MC_HOME/minecraft-server.pid"
+MC_START_CMD="java -Xmx8G -Xms256M -jar spigot.jar"
 
 TMUX_SOCKET="minecraft"
 TMUX_SESSION="minecraft"
@@ -23,7 +25,15 @@ start_server() {
 		return 1
 	fi
 	echo "Starting minecraft server in tmux session"
-	tmux -L $TMUX_SOCKET new-session -c $MC_HOME -s $TMUX_SESSION -d java -Xmx8G -Xms256M -jar spigot.jar
+	tmux -L $TMUX_SOCKET new-session -c $MC_HOME -s $TMUX_SESSION -d "$MC_START_CMD"
+
+	pid=$(tmux -L $TMUX_SOCKET list-sessions -F '#{pane_pid}')
+	if [ "$(echo $pid | wc -l)" -ne 1 ]; then
+		echo "Could not determine PID, multiple active sessions"
+		return 1
+	fi
+	echo -n $pid > "$MC_PID_FILE"
+
 	return $?
 }
 
@@ -63,6 +73,8 @@ stop_server() {
 			return 1
 		fi
 	done
+
+	rm -f "$MC_PID_FILE"
 
 	return 0
 }

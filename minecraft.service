@@ -9,7 +9,7 @@ Type=forking
 User=minecraft
 Group=minecraft
 Nice=5
-KillMode=none
+TimeoutStopSec=90
 
 ProtectHome=read-only
 ProtectSystem=full
@@ -18,7 +18,9 @@ NoNewPrivileges=yes
 PrivateTmp=no
 InaccessiblePaths=/root /sys /srv -/opt /media -/lost+found
 ReadWritePaths=/var/minecraft
+
 WorkingDirectory=/var/minecraft
+PIDFile=/var/minecraft/minecraft-server.pid
 ExecStart=/var/minecraft/service.sh start
 ExecReload=/var/minecraft/service.sh reload
 ExecStop=/var/minecraft/service.sh stop
